@@ -20,8 +20,8 @@
         android:padding="16dp">
 
         <ImageButton
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="33dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:id="@+id/imgFlag"
             android:layout_weight="1"
