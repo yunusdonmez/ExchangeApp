@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ic_dollar_bill_svgrepo_com"
     android:minHeight="150dp"
     android:orientation="vertical">
 
@@ -18,17 +17,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/imgFlag"
             android:layout_margin="8dp"
             android:background="@drawable/ic_favorite_black_24dp" />
 
         <TextView
             android:id="@+id/txtCurrencyType"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Dolar" />
 
@@ -43,11 +43,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
+                android:id="@+id/txtValueBuying"
                 tools:text="Alım : 00,00 TL" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/txtValueSelling"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 tools:text="Satış : 00,00 TL" />
