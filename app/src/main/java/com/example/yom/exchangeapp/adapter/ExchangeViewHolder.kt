@@ -27,8 +27,5 @@ class ExchangeViewHolder(parent: ViewGroup)
         valueSelling.text = "Satış : " + df.format(num).toString() + " TL"
         valueBuying.text = "Alış : " + df.format(num2).toString() + " TL"
         Glide.with(itemView.context).load(exchangeDTO.flag).into(imgFlag)
-
     }
-
-
 }

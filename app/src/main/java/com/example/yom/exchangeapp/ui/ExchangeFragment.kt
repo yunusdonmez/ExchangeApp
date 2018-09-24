@@ -62,7 +62,7 @@ class ExchangeFragment : Fragment() {
                     jsonObject.getString("name"),
                     jsonObject.getString("selling"),
                     jsonObject.getString("buying"),
-                    "https://www.bloomberght.com/assets/images/flags/" + jsonObject.getString("code") + "TRY.png"
+                    "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png"
             ))
             x++
         }
