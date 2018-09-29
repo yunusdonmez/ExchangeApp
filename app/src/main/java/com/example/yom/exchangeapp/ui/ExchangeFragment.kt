@@ -21,6 +21,7 @@ class ExchangeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_exchange, container, false)
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -28,8 +29,6 @@ class ExchangeFragment : Fragment() {
 
         val url = "https://www.doviz.com/api/v1/currencies/all/latest"
         AsyncTaskHandleJson().execute(url)
-
-
     }
 
     inner class AsyncTaskHandleJson : AsyncTask<String, String, String>() {
@@ -43,7 +42,6 @@ class ExchangeFragment : Fragment() {
                 connection.disconnect()
             }
             return text
-
         }
 
         override fun onPostExecute(result: String?) {
@@ -66,12 +64,9 @@ class ExchangeFragment : Fragment() {
             ))
             x++
         }
-
         rcyExchange.apply {
             this.layoutManager = LinearLayoutManager(activity)
             this.adapter = ExchangeAdapter(exchangeList)
         }
     }
-
-
 }

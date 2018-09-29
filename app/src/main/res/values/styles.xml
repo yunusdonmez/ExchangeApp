@@ -8,4 +8,37 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SwitchCompatTheme">
+        <item name="android:colorForeground">#F00</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="switchNotification">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:theme">@style/SwitchCompatTheme</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:text">@string/bildirim</item>
+    </style>
+
+    <style name="txtLimit">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="txtBuyingSellingValues">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
 </resources>

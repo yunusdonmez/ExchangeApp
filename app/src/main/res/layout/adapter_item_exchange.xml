@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorLayout"
-    android:minHeight="120dp"
+    android:minHeight="200dp"
     android:orientation="vertical"
     android:paddingStart="16dp"
     android:paddingLeft="16dp"
@@ -12,18 +12,20 @@
     android:paddingRight="16dp">
 
     <LinearLayout
+        android:id="@+id/lnrLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
+        android:layout_height="100dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="12dp"
         android:background="@color/colorAccent"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageButton
+            android:id="@+id/imgFlag"
             android:layout_width="33dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:id="@+id/imgFlag"
             android:layout_weight="1"
             android:background="@color/colorAccent" />
 
@@ -34,39 +36,76 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:layout_weight="2"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="Dolar" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
             android:layout_weight="3"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_marginBottom="8dp"
                 android:id="@+id/txtValueBuying"
-                android:textSize="16sp"
+                style="@style/txtBuyingSellingValues"
                 tools:text="Alım : 00,00 TL" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/txtValueSelling"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                android:layout_marginTop="8dp"
+                style="@style/txtBuyingSellingValues"
                 tools:text="Satış : 00,00 TL" />
         </LinearLayout>
-
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edtUstSinir"
+                style="@style/txtLimit"
+                android:hint="@string/st_sinir" />
+
+            <EditText
+                android:id="@+id/edtAltSinir"
+                style="@style/txtLimit"
+                android:hint="@string/alt_sinir" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchTop"
+                style="@style/switchNotification" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchBot"
+                style="@style/switchNotification" />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -12,5 +12,6 @@ class ExchangeAdapter(private var moneyList: List<ExchangeDTO>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
         holder.bindTo(moneyList[position])
+        val number = 2
     }
 }
