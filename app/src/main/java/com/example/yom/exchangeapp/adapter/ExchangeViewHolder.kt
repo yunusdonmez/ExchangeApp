@@ -22,7 +22,7 @@ class ExchangeViewHolder(parent: ViewGroup)
         currencyType.text = exchangeDTO.moneyType.toUpperCase().replace("-", " ")
         val num = exchangeDTO.valueSelling.toDouble()
         val num2 = exchangeDTO.valueBuying.toDouble()
-        val df = DecimalFormat("#.###")
+        val df = DecimalFormat("#.####")
         df.roundingMode = RoundingMode.CEILING
         valueSelling.text = "Satış : " + df.format(num).toString() + " TL"
         valueBuying.text = "Alış : " + df.format(num2).toString() + " TL"
