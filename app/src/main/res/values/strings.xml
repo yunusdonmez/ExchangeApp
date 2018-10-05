@@ -6,4 +6,6 @@
     <string name="alt_sinir">Alt Sınır</string>
     <string name="st_sinir">Üst Sınır</string>
     <string name="bildirim">Bildirim</string>
+    <string name="arama">Arama</string>
+    <string name="ara">Ara</string>
 </resources>
