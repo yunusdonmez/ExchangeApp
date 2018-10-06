@@ -23,10 +23,10 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder(parent)
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = listFiltered.size
 
     override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
-        holder.bindTo(list[position])
+        holder.bindTo(listFiltered[position])
         val number = 2
     }
 
