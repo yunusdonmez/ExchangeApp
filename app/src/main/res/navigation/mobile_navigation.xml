@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/frmExchange"
         android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
-        tools:layout="@layout/fragment_exchange" />
+        tools:layout="@layout/fragment_exchange">
+        <action
+            android:id="@+id/action_frmExchange_to_frmFavourite2"
+            app:destination="@id/frmFavourite" />
+    </fragment>
+    <fragment
+        android:id="@+id/frmFavourite"
+        android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
+        tools:layout="@layout/fragment_exchange"></fragment>
 </navigation>

@@ -12,6 +12,6 @@
         android:iconifiedByDefault="true"
         android:padding="5dp"
         android:title="Ara"
-        app:showAsAction="always|collapseActionView"
+        app:showAsAction="always"
         appcombat:actionViewClass="android.widget.SearchView" />
 </menu>

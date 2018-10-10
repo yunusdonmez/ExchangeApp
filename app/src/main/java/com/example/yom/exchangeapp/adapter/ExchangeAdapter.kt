@@ -1,7 +1,6 @@
 package com.example.yom.exchangeapp.adapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -11,8 +10,7 @@ import com.example.yom.exchangeapp.dto.ExchangeDTO
 class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
     private var list = ArrayList<ExchangeDTO>()
     private var listFiltered = ArrayList<ExchangeDTO>()
-    lateinit var con: Context
-    lateinit var rv: View
+    var con: Context
 
     constructor(list: ArrayList<ExchangeDTO>, con: Context) : super() {
         this.list = list
@@ -27,7 +25,6 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
 
     override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
         holder.bindTo(listFiltered[position])
-        val number = 2
     }
 
     override fun getFilter(): Filter {

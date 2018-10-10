@@ -4,7 +4,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,10 +18,9 @@ import javax.net.ssl.HttpsURLConnection
 
 class ExchangeFragment : Fragment() {
 
-    lateinit var toolbar: Toolbar
     lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
-
+    private val exchangeList = ArrayList<ExchangeDTO>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,6 +28,7 @@ class ExchangeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_exchange, container, false)
 
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val url = "https://www.doviz.com/api/v1/currencies/all/latest"
@@ -38,29 +37,21 @@ class ExchangeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater!!.inflate(R.menu.menu_main, menu)
-        var item: MenuItem = menu!!.findItem(R.id.actionSearch)
+        val item: MenuItem = menu!!.findItem(R.id.actionSearch)
         searchView = MenuItemCompat.getActionView(item) as SearchView
-        /*MenuItemCompat.setOnActionExpandListener(item, object : MenuItemCompat.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                (searchView.findViewById(androidx.appcompat.R.id.search_src_text) as? AppCompatEditText)?.setHintTextColor(resources.getColor(R.color.colorLayout))
-                (searchView.findViewById(androidx.appcompat.R.id.search_src_text) as? AppCompatEditText)?.setHintTextColor(resources.getColor(R.color.colorLayout))
-                (searchView.findViewById(androidx.appcompat.R.id.search_src_text) as? AppCompatEditText)?.hint = "Ara"
-                searchView.isIconified = true
-                searchView.setQuery("", false)
-                searchView.maxWidth = Int.MAX_VALUE
-                searchName(searchView)
-                return true
-            }
 
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                searchView.setQuery("", false)
-                return true
-            }
-        })*/
         searchName(searchView)
     }
 
-    fun searchName(searchView: SearchView) {
+    override fun onDestroyOptionsMenu() {
+        rcyExchange.setHasFixedSize(true)
+        rcyExchange.layoutManager = LinearLayoutManager(activity)
+        adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
+        rcyExchange.adapter = adapter
+        super.onDestroyOptionsMenu()
+    }
+
+    private fun searchName(searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -101,7 +92,6 @@ class ExchangeFragment : Fragment() {
 
     private fun handleJson(jsonstring: String?) {
         val jsonArray = JSONArray(jsonstring)
-        val exchangeList = ArrayList<ExchangeDTO>()
         var x = 0
         while (x < jsonArray.length()) {
             val jsonObject = jsonArray.getJSONObject(x)

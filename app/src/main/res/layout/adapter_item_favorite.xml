@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorLayout"
-    android:minHeight="150dp"
+    android:minHeight="200dp"
     android:orientation="vertical"
     android:paddingStart="16dp"
     android:paddingLeft="16dp"
@@ -12,7 +12,7 @@
     android:paddingRight="16dp">
 
     <LinearLayout
-        android:id="@+id/lnrLayout"
+        android:id="@+id/lnrLayoutFavorite"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="top"
@@ -22,7 +22,7 @@
         android:padding="8dp">
 
         <ImageButton
-            android:id="@+id/imgFlag"
+            android:id="@+id/imgFlagFavorite"
             android:layout_width="33dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
@@ -30,7 +30,7 @@
             android:background="@color/colorAccent" />
 
         <TextView
-            android:id="@+id/txtCurrencyType"
+            android:id="@+id/txtCurrencyTypeFavorite"
             android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -51,22 +51,71 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtValueBuying"
+                android:id="@+id/txtValueBuyingFavorite"
                 style="@style/txtBuyingSellingValues"
                 tools:text="Alım : 00,00 TL" />
 
             <TextView
-                android:id="@+id/txtValueSelling"
+                android:id="@+id/txtValueSellingFavorite"
                 style="@style/txtBuyingSellingValues"
                 tools:text="Satış : 00,00 TL" />
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imgFavoriteButton"
+            android:id="@+id/imgFavoriteButtonFavorite"
             android:layout_width="wrap_content"
-            android:layout_gravity="center|end"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
             android:background="@drawable/ic_favorite" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edtUstSinir"
+                style="@style/txtLimit"
+                android:hint="@string/st_sinir" />
+
+            <EditText
+                android:id="@+id/edtAltSinir"
+                style="@style/txtLimit"
+                android:hint="@string/alt_sinir" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchTop"
+                style="@style/switchNotification" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchBot"
+                style="@style/switchNotification" />
+        </LinearLayout>
     </LinearLayout>
 
 
