@@ -1,5 +1,6 @@
 package com.example.yom.exchangeapp.ui
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
@@ -7,9 +8,11 @@ import android.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.ExchangeAdapter
-import com.example.yom.exchangeapp.dto.ExchangeDTO
+import com.example.yom.exchangeapp.db.ExchangeDB
+import com.example.yom.exchangeapp.entity.ExchangeEntity
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import org.json.JSONArray
 import java.net.URL
@@ -20,7 +23,7 @@ class ExchangeFragment : Fragment() {
 
     lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
-    private val exchangeList = ArrayList<ExchangeDTO>()
+    private val exchangeList = ArrayList<ExchangeEntity>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -71,6 +74,7 @@ class ExchangeFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("StaticFieldLeak")
     inner class AsyncTaskHandleJson : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg url: String?): String {
             val connection = URL(url[0]).openConnection() as HttpsURLConnection
@@ -93,16 +97,37 @@ class ExchangeFragment : Fragment() {
     private fun handleJson(jsonstring: String?) {
         val jsonArray = JSONArray(jsonstring)
         var x = 0
-        while (x < jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(x)
-            exchangeList.add(ExchangeDTO(
-                    jsonObject.getString("name"),
-                    jsonObject.getString("selling"),
-                    jsonObject.getString("buying"),
-                    "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png"
-            ))
-            x++
-        }
+        val db = Room.databaseBuilder(
+                context!!.applicationContext,
+                ExchangeDB::class.java,
+                "exchangeDB"
+        ).fallbackToDestructiveMigration().build()
+        Thread {
+            while (x < jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(x)
+                if (db.exchDao().getItemCounts(jsonObject.getString("code")) > 0) {
+                    exchangeList.add(ExchangeEntity(
+                            jsonObject.getString("code"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("selling"),
+                            jsonObject.getString("buying"),
+                            "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
+                            true)
+                    )
+                } else {
+                    exchangeList.add(ExchangeEntity(
+                            jsonObject.getString("code"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("selling"),
+                            jsonObject.getString("buying"),
+                            "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
+                            false)
+                    )
+                }
+                x++
+            }
+        }.start()
+
         rcyExchange.setHasFixedSize(true)
         rcyExchange.layoutManager = LinearLayoutManager(activity)
         adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
@@ -114,6 +139,5 @@ class ExchangeFragment : Fragment() {
              this.adapter = adapter
          }*/
     }
-
 }
 

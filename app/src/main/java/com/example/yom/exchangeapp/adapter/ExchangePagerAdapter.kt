@@ -13,7 +13,9 @@ class ExchangePagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdap
                 ExchangeFragment()
             }
 
-            else -> FavoriteFragment()
+            else -> {
+                FavoriteFragment()
+            }
         }
     }
 

@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yom.exchangeapp.dto.ExchangeDTO
+import com.example.yom.exchangeapp.entity.ExchangeEntity
 
 class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
-    private var list = ArrayList<ExchangeDTO>()
-    private var listFiltered = ArrayList<ExchangeDTO>()
+    private var list = ArrayList<ExchangeEntity>()
+    private var listFiltered = ArrayList<ExchangeEntity>()
     var con: Context
 
-    constructor(list: ArrayList<ExchangeDTO>, con: Context) : super() {
+    constructor(list: ArrayList<ExchangeEntity>, con: Context) : super() {
         this.list = list
         listFiltered = list
         this.con = con
@@ -24,7 +24,7 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
     override fun getItemCount(): Int = listFiltered.size
 
     override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
-        holder.bindTo(listFiltered[position])
+        holder.bindTo(listFiltered[position], con)
     }
 
     override fun getFilter(): Filter {
@@ -34,8 +34,8 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
                 if (charString.isEmpty()) {
                     listFiltered = list
                 } else {
-                    var filteredList = ArrayList<ExchangeDTO>()
-                    for (s: ExchangeDTO in list) {
+                    var filteredList = ArrayList<ExchangeEntity>()
+                    for (s: ExchangeEntity in list) {
                         if (s.moneyType.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(s)
                         }
@@ -48,7 +48,7 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
             }
 
             override fun publishResults(p0: CharSequence?, results: FilterResults?) {
-                listFiltered = results!!.values as ArrayList<ExchangeDTO>
+                listFiltered = results!!.values as ArrayList<ExchangeEntity>
                 notifyDataSetChanged()
             }
         }

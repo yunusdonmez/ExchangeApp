@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.yom.exchangeapp.R
-import com.example.yom.exchangeapp.dto.ExchangeDTO
+import com.example.yom.exchangeapp.entity.ExchangeEntity
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -19,7 +19,7 @@ class FavoriteViewHolder(parent: ViewGroup)
     private val imgFlag by lazy { itemView.findViewById<ImageView>(R.id.imgFlagFavorite) }
     private val imgFollow by lazy { itemView.findViewById<ImageView>(R.id.imgFavoriteButtonFavorite) }
 
-    fun bindTo(favoriteDTO: ExchangeDTO) {
+    fun bindTo(favoriteDTO: ExchangeEntity) {
         currencyType.text = favoriteDTO.moneyType.toUpperCase().replace("-", " ")
         val num = favoriteDTO.valueSelling.toDouble()
         val num2 = favoriteDTO.valueBuying.toDouble()
@@ -43,5 +43,6 @@ class FavoriteViewHolder(parent: ViewGroup)
             }
 
         }
+
     }
 }
