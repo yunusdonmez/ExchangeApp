@@ -1,5 +1,6 @@
 package com.example.yom.exchangeapp.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -11,7 +12,7 @@ import com.example.yom.exchangeapp.entity.ExchangeEntity
 @Dao
 interface ExchangeDAO {
     @Query("SELECT * FROM following")
-    fun getAll(): List<ExchangeEntity>
+    fun getAll(): LiveData<List<ExchangeEntity>>
 
     @Query("SELECT count(*) FROM following WHERE code IN (:countryCode)")
     fun getItemCounts(countryCode: String): Int

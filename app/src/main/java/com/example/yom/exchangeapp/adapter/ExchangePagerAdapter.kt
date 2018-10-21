@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.yom.exchangeapp.ui.ExchangeFragment
 import com.example.yom.exchangeapp.ui.FavoriteFragment
 
+
 class ExchangePagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment {
         return when (position) {

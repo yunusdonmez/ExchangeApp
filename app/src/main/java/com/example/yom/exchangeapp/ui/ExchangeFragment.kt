@@ -7,12 +7,12 @@ import android.view.*
 import android.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.ExchangeAdapter
-import com.example.yom.exchangeapp.db.ExchangeDB
 import com.example.yom.exchangeapp.entity.ExchangeEntity
+import com.example.yom.exchangeapp.model.ExchangeViewModel
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import org.json.JSONArray
 import java.net.URL
@@ -24,6 +24,7 @@ class ExchangeFragment : Fragment() {
     lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
     private val exchangeList = ArrayList<ExchangeEntity>()
+    lateinit var exchangeViewModel: ExchangeViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -97,12 +98,12 @@ class ExchangeFragment : Fragment() {
     private fun handleJson(jsonstring: String?) {
         val jsonArray = JSONArray(jsonstring)
         var x = 0
-        val db = Room.databaseBuilder(
+        /*val db = Room.databaseBuilder(
                 context!!.applicationContext,
                 ExchangeDB::class.java,
                 "exchangeDB"
         ).fallbackToDestructiveMigration().build()
-        Thread {
+            Thread {
             while (x < jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(x)
                 if (db.exchDao().getItemCounts(jsonObject.getString("code")) > 0) {
@@ -126,12 +127,42 @@ class ExchangeFragment : Fragment() {
                 }
                 x++
             }
+            db.close()
         }.start()
 
         rcyExchange.setHasFixedSize(true)
         rcyExchange.layoutManager = LinearLayoutManager(activity)
         adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
+        rcyExchange.adapter = adapter*/
+        exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
+        while (x < jsonArray.length()) {
+            val jsonObject = jsonArray.getJSONObject(x)
+            if (exchangeViewModel.getItemCounts(jsonObject.getString("code")) > 0) {
+                exchangeList.add(ExchangeEntity(
+                        jsonObject.getString("code"),
+                        jsonObject.getString("name"),
+                        jsonObject.getString("selling"),
+                        jsonObject.getString("buying"),
+                        "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
+                        true)
+                )
+            } else {
+                exchangeList.add(ExchangeEntity(
+                        jsonObject.getString("code"),
+                        jsonObject.getString("name"),
+                        jsonObject.getString("selling"),
+                        jsonObject.getString("buying"),
+                        "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
+                        false)
+                )
+            }
+            x++
+        }
+        rcyExchange.setHasFixedSize(true)
+        rcyExchange.layoutManager = LinearLayoutManager(activity)
+        adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
         rcyExchange.adapter = adapter
+
         /* rcyExchange.apply {
              this.setHasFixedSize(true)
              this.layoutManager = LinearLayoutManager(activity)
