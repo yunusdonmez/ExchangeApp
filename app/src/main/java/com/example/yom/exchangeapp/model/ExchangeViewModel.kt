@@ -21,6 +21,10 @@ class ExchangeViewModel(application: Application) : AndroidViewModel(application
         return mRepository.getCountItem(code)
     }
 
+    fun updateDatas() {
+        mRepository.updateDatas()
+        allList = mRepository.allList
+    }
     fun insert(exchangeEntity: ExchangeEntity) {
         mRepository.insert(exchangeEntity)
     }

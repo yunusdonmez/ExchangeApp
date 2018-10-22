@@ -1,17 +1,19 @@
 package com.example.yom.exchangeapp.adapter
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 import java.util.*
 
-class FavoriteAdapter(val onItemSelect: (exchangeEntity: ExchangeEntity) -> Unit) : RecyclerView.Adapter<FavoriteViewHolder>() {
+class FavoriteAdapter(context: Context) : RecyclerView.Adapter<FavoriteViewHolder>() {
+
 
     private var moneyList: List<ExchangeEntity> = Collections.emptyList()
-
+    private var context: Context = context
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
 
-        holder.bindTo(moneyList[position])
+        holder.bindTo(moneyList[position], context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder = FavoriteViewHolder(parent)

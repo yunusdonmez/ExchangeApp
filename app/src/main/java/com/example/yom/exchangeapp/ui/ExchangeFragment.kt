@@ -43,7 +43,6 @@ class ExchangeFragment : Fragment() {
         inflater!!.inflate(R.menu.menu_main, menu)
         val item: MenuItem = menu!!.findItem(R.id.actionSearch)
         searchView = MenuItemCompat.getActionView(item) as SearchView
-
         searchName(searchView)
     }
 
@@ -162,7 +161,6 @@ class ExchangeFragment : Fragment() {
         rcyExchange.layoutManager = LinearLayoutManager(activity)
         adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
         rcyExchange.adapter = adapter
-
         /* rcyExchange.apply {
              this.setHasFixedSize(true)
              this.layoutManager = LinearLayoutManager(activity)
