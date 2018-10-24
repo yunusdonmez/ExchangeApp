@@ -11,6 +11,7 @@ class FavoriteAdapter(context: Context) : RecyclerView.Adapter<FavoriteViewHolde
 
     private var moneyList: List<ExchangeEntity> = Collections.emptyList()
     private var context: Context = context
+
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
 
         holder.bindTo(moneyList[position], context)

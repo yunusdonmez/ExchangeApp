@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -13,13 +14,27 @@ import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.ExchangeAdapter
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 import com.example.yom.exchangeapp.model.ExchangeViewModel
+import com.example.yom.exchangeapp.network.SendRequest
+import com.example.yom.exchangeapp.network.response.MoneyListResponse
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import org.json.JSONArray
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
-class ExchangeFragment : Fragment() {
+class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
+
+    override fun onFailure(call: Call<List<MoneyListResponse>>, t: Throwable) {
+        Toast.makeText(context, "Fail", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
+        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
+    }
+
 
     lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
@@ -35,8 +50,10 @@ class ExchangeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val url = "https://www.doviz.com/api/v1/currencies/all/latest"
-        AsyncTaskHandleJson().execute(url)
+        //val url = "https://www.doviz.com/api/v1/currencies/all/latest"
+        //AsyncTaskHandleJson().execute(url)
+        SendRequest.getAll().enqueue(this)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

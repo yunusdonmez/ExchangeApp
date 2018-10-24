@@ -26,6 +26,7 @@ class ExchangeRepository internal constructor(application: Application) {
     fun updateDatas() {
         allList = exchangeDAO.getAll()
     }
+
     fun getCountItem(code: String): Int = SelectAsyncTask(exchangeDAO).execute(code).get()
 }
 

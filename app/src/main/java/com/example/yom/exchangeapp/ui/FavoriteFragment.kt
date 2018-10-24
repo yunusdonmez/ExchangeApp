@@ -34,13 +34,13 @@ class FavoriteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
-    fun updateFragment(favoritercy: RecyclerView, exchangeViewModel: ExchangeViewModel, activity: FragmentActivity) {
-        favoritercy.layoutManager = LinearLayoutManager(activity)
-        adapter = FavoriteAdapter(favoritercy.context)
-        favoritercy.adapter = adapter
-        //exchangeViewModel.updateDatas()
+    fun updateFragment(favoriteRcy: RecyclerView, exchangeViewModel: ExchangeViewModel, activity: FragmentActivity) {
+        favoriteRcy.layoutManager = LinearLayoutManager(activity)
+        adapter = FavoriteAdapter(favoriteRcy.context)
+        favoriteRcy.adapter = adapter
+
         exchangeViewModel.allList.observe(activity, Observer<List<ExchangeEntity>> {
-            (favoritercy.adapter as FavoriteAdapter).setNewFavoriteList(it)
+            (favoriteRcy.adapter as FavoriteAdapter).setNewFavoriteList(it)
             adapter.notifyDataSetChanged()
 
         })

@@ -25,6 +25,7 @@ class ExchangeViewModel(application: Application) : AndroidViewModel(application
         mRepository.updateDatas()
         allList = mRepository.allList
     }
+
     fun insert(exchangeEntity: ExchangeEntity) {
         mRepository.insert(exchangeEntity)
     }
