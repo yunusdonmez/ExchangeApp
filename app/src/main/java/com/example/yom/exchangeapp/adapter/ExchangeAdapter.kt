@@ -18,7 +18,6 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
         this.con = con
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder(parent)
 
     override fun getItemCount(): Int = listFiltered.size

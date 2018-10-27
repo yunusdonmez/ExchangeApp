@@ -23,6 +23,8 @@ interface ExchangeDAO {
     @Insert(onConflict = REPLACE)
     fun insertItem(moneyList: ExchangeEntity)
 
+    @Query("DELETE from following")
+    fun deleteAll()
     @Delete
     fun delete(moneyList: ExchangeEntity)
 }

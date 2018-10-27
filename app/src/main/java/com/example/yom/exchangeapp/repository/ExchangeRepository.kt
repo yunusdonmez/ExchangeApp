@@ -17,6 +17,7 @@ class ExchangeRepository internal constructor(application: Application) {
         exchangeDAO = db!!.exchDao()
         // countList = exchangeDAO.getCounts()
         allList = exchangeDAO.getAll()
+//        exchangeDAO.deleteAll()
     }
 
     fun insert(moneyList: ExchangeEntity) {

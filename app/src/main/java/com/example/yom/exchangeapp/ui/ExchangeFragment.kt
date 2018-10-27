@@ -1,11 +1,10 @@
 package com.example.yom.exchangeapp.ui
 
-import android.annotation.SuppressLint
-import android.os.AsyncTask
+
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -17,29 +16,49 @@ import com.example.yom.exchangeapp.model.ExchangeViewModel
 import com.example.yom.exchangeapp.network.SendRequest
 import com.example.yom.exchangeapp.network.response.MoneyListResponse
 import kotlinx.android.synthetic.main.fragment_exchange.*
-import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
-
 
 class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
-
-    override fun onFailure(call: Call<List<MoneyListResponse>>, t: Throwable) {
-        Toast.makeText(context, "Fail", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
-        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show()
-    }
 
 
     lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
-    private val exchangeList = ArrayList<ExchangeEntity>()
+    var exchangeList = ArrayList<ExchangeEntity>()
     lateinit var exchangeViewModel: ExchangeViewModel
+    override fun onFailure(call: Call<List<MoneyListResponse>>, t: Throwable) {
+        Log.e("Retrofit", "$t")
+    }
+
+    override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
+        var i = 0
+        exchangeList.clear()
+        while (i < response.body()!!.size) {
+            if (exchangeViewModel.getItemCounts(response.body()!![i].code) > 0) {
+                exchangeList.add(ExchangeEntity(
+                        response.body()!![i].code,
+                        response.body()!![i].moneyType,
+                        response.body()!![i].valueSelling,
+                        response.body()!![i].valueBuying,
+                        "https://coinyep.com/img/png/" + response.body()!![i].code + ".png",
+                        true))
+            } else {
+                exchangeList.add(ExchangeEntity(
+                        response.body()!![i].code,
+                        response.body()!![i].moneyType,
+                        response.body()!![i].valueSelling,
+                        response.body()!![i].valueBuying,
+                        "https://coinyep.com/img/png/" + response.body()!![i].code + ".png",
+                        false))
+            }
+            i++
+        }
+        rcyExchange.setHasFixedSize(true)
+        rcyExchange.layoutManager = LinearLayoutManager(activity)
+        adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
+        rcyExchange.adapter = adapter
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,13 +69,12 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //val url = "https://www.doviz.com/api/v1/currencies/all/latest"
-        //AsyncTaskHandleJson().execute(url)
-        SendRequest.getAll().enqueue(this)
-
+        // val url = "https://www.doviz.com/api/v1/currencies/all/latest"
+        exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        SendRequest.getAll().enqueue(this)
         inflater!!.inflate(R.menu.menu_main, menu)
         val item: MenuItem = menu!!.findItem(R.id.actionSearch)
         searchView = MenuItemCompat.getActionView(item) as SearchView
@@ -89,101 +107,6 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    inner class AsyncTaskHandleJson : AsyncTask<String, String, String>() {
-        override fun doInBackground(vararg url: String?): String {
-            val connection = URL(url[0]).openConnection() as HttpsURLConnection
-            var text: String
-            try {
-                connection.connect()
-                text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
-            } finally {
-                connection.disconnect()
-            }
-            return text
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            handleJson(result)
-        }
-    }
-
-    private fun handleJson(jsonstring: String?) {
-        val jsonArray = JSONArray(jsonstring)
-        var x = 0
-        /*val db = Room.databaseBuilder(
-                context!!.applicationContext,
-                ExchangeDB::class.java,
-                "exchangeDB"
-        ).fallbackToDestructiveMigration().build()
-            Thread {
-            while (x < jsonArray.length()) {
-                val jsonObject = jsonArray.getJSONObject(x)
-                if (db.exchDao().getItemCounts(jsonObject.getString("code")) > 0) {
-                    exchangeList.add(ExchangeEntity(
-                            jsonObject.getString("code"),
-                            jsonObject.getString("name"),
-                            jsonObject.getString("selling"),
-                            jsonObject.getString("buying"),
-                            "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
-                            true)
-                    )
-                } else {
-                    exchangeList.add(ExchangeEntity(
-                            jsonObject.getString("code"),
-                            jsonObject.getString("name"),
-                            jsonObject.getString("selling"),
-                            jsonObject.getString("buying"),
-                            "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
-                            false)
-                    )
-                }
-                x++
-            }
-            db.close()
-        }.start()
-
-        rcyExchange.setHasFixedSize(true)
-        rcyExchange.layoutManager = LinearLayoutManager(activity)
-        adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
-        rcyExchange.adapter = adapter*/
-        exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
-        while (x < jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(x)
-            if (exchangeViewModel.getItemCounts(jsonObject.getString("code")) > 0) {
-                exchangeList.add(ExchangeEntity(
-                        jsonObject.getString("code"),
-                        jsonObject.getString("name"),
-                        jsonObject.getString("selling"),
-                        jsonObject.getString("buying"),
-                        "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
-                        true)
-                )
-            } else {
-                exchangeList.add(ExchangeEntity(
-                        jsonObject.getString("code"),
-                        jsonObject.getString("name"),
-                        jsonObject.getString("selling"),
-                        jsonObject.getString("buying"),
-                        "https://coinyep.com/img/png/" + jsonObject.getString("code") + ".png",
-                        false)
-                )
-            }
-            x++
-        }
-        rcyExchange.setHasFixedSize(true)
-        rcyExchange.layoutManager = LinearLayoutManager(activity)
-        adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
-        rcyExchange.adapter = adapter
-        /* rcyExchange.apply {
-             this.setHasFixedSize(true)
-             this.layoutManager = LinearLayoutManager(activity)
-             adapter = ExchangeAdapter(exchangeList, context)
-             this.adapter = adapter
-         }*/
     }
 }
 

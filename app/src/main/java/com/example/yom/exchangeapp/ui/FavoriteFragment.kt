@@ -38,7 +38,7 @@ class FavoriteFragment : Fragment() {
         favoriteRcy.layoutManager = LinearLayoutManager(activity)
         adapter = FavoriteAdapter(favoriteRcy.context)
         favoriteRcy.adapter = adapter
-
+        //exchangeViewModel.updateDatas()
         exchangeViewModel.allList.observe(activity, Observer<List<ExchangeEntity>> {
             (favoriteRcy.adapter as FavoriteAdapter).setNewFavoriteList(it)
             adapter.notifyDataSetChanged()

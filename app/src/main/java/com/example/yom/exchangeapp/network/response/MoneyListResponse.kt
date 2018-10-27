@@ -1,10 +1,10 @@
 package com.example.yom.exchangeapp.network.response
 
-import com.example.yom.exchangeapp.entity.ExchangeEntity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class MoneyListResponse(){
-    private val moneyList: ExchangeEntity? = null
-}
+class MoneyListResponse(@JsonProperty("full_name") val moneyType: String,
+                        @JsonProperty("selling") val valueSelling: String,
+                        @JsonProperty("buying") val valueBuying: String,
+                        @JsonProperty("code") val code: String)
