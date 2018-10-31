@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/frmExchange">
+    <activity
+        android:id="@+id/actMain"
+        android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
+        tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/frmExchange"
         android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
@@ -14,6 +18,14 @@
     </fragment>
     <fragment
         android:id="@+id/frmFavourite"
-        android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
-        tools:layout="@layout/fragment_exchange"></fragment>
+        android:name="com.example.yom.exchangeapp.ui.FavoriteFragment"
+        tools:layout="@layout/fragment_favourite">
+        <action
+            android:id="@+id/action_frmFavourite_to_frmVideo"
+            app:destination="@id/frmVideo" />
+    </fragment>
+    <fragment
+        android:id="@+id/frmVideo"
+        android:name="com.example.yom.exchangeapp.ui.VideoFragment"
+        tools:layout="@layout/fragment_video" />
 </navigation>

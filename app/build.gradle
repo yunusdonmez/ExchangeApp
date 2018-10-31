@@ -46,7 +46,12 @@ dependencies {
     //viewmodel roomdb
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.0"
+    //glide
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
+    //picasso-exo player-youtube
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.android.exoplayer:exoplayer:2.8.4'
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
