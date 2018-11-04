@@ -27,6 +27,7 @@ import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.layout_video.*
 
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -39,6 +40,19 @@ class VideoFragment : Fragment() {
     lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var bandwidthMeter: DefaultBandwidthMeter
     private lateinit var playerView: PlayerView
+    //private lateinit var controllerView: PlayerControlView
+
+    // autoplay = false
+    private var autoPlay = false
+
+    // used to remember the playback position
+    private var currentWindow: Int = 0
+    private var playbackPosition: Long = 0
+
+    // constant fields for saving and restoring bundle
+    val AUTOPLAY = "autoplay"
+    val CURRENT_WINDOW_INDEX = "current_window_index"
+    val PLAYBACK_POSITION = "playback_position"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,29 +60,42 @@ class VideoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        if (savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0)
+            currentWindow = savedInstanceState.getInt(CURRENT_WINDOW_INDEX, 0)
+            autoPlay = savedInstanceState.getBoolean(AUTOPLAY, false)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         val fragmentVideoFragment = inflater.inflate(R.layout.fragment_video, container, false)
-        bandwidthMeter = DefaultBandwidthMeter()
-        mediaDataSourceFactory = buildDataSourceFactory(true)
-        if (exoPlayer == null)
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(context), DefaultTrackSelector(), DefaultLoadControl())
 
         playerView = fragmentVideoFragment.findViewById(R.id.simpleExoPlayerView)
 
-        playerView.apply {
-            player = exoPlayer
-            useController = false
-            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-        }
         val videoList = ArrayList<YoutubeDTO>()
         videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
         videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
         videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
         videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))
-        exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+        initializePlayer()
+        return fragmentVideoFragment
+    }
+
+    fun initializePlayer() {
+        bandwidthMeter = DefaultBandwidthMeter()
+        mediaDataSourceFactory = buildDataSourceFactory(true)
+        if (exoPlayer == null)
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(context), DefaultTrackSelector(), DefaultLoadControl())
+
+        //controllerView = fragmentVideoFragment.findViewById(R.id.exo_controller)
+        //controllerView. = playerView
+        playerView.apply {
+            player = exoPlayer
+            useController = true
+            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+        }
         object : YouTubeExtractor(context!!) {
             override fun onExtractionComplete(ytfiles: SparseArray<YtFile>?, vmeta: VideoMeta) {
                 val itag = 18// 135:480p,18:360p,17:144p
@@ -78,14 +105,15 @@ class VideoFragment : Fragment() {
                     val mediaSource = ExtractorMediaSource.Factory(mediaDataSourceFactory)
                             .setExtractorsFactory(extractorFactory)
                             .createMediaSource(Uri.parse(downloadUrl))
-                    exoPlayer?.prepare(mediaSource, true, false)
-                    exoPlayer?.seekTo(0)
+                    exoPlayer?.prepare(mediaSource, true, true)
+                    exoPlayer?.seekTo(playbackPosition)
                 } else {
                     Toast.makeText(context, "Video Başlatılamadı", Toast.LENGTH_LONG).show()
                 }
             }
         }.extract("http://youtube.com/watch?v=$param1", true, true)
-        return fragmentVideoFragment
+        exoPlayer?.playWhenReady = autoPlay
+        exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,11 +135,12 @@ class VideoFragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) startPlayer()
-        else pausePlayer()
+        else releasePlayer()
     }
 
     override fun onResume() {
         super.onResume()
+        //hideSystemUi()
         if (userVisibleHint) startPlayer()
     }
 
@@ -122,22 +151,33 @@ class VideoFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        releasePlayer()
     }
 
     //exoplayer çıkış
     private fun releasePlayer() {
-        exoPlayer?.release()
+        if (exoPlayer != null) {
+            playbackPosition = exoPlayer!!.currentPosition
+            currentWindow = exoPlayer!!.currentWindowIndex
+            autoPlay = exoPlayer!!.playWhenReady
+            exoPlayer!!.release()
+            exoPlayer = null
+        }
     }
 
-    private fun pausePlayer() {
-        exoPlayer?.playWhenReady = false
-        exoPlayer?.playbackState
-    }
+    /*private fun pausePlayer() {
+        if (Util.SDK_INT <= 23) releasePlayer()
+        /*exoPlayer?.playWhenReady = false
+        exoPlayer?.playbackState*/
+    }*/
 
     private fun startPlayer() {
-        exoPlayer?.playWhenReady = true
-        exoPlayer?.playbackState
+        // exoPlayer?.prepare()
+        if (Util.SDK_INT > 23) {
+            initializePlayer()
+        }
+        /*exoPlayer?.playWhenReady = true
+        exoPlayer?.playbackState*/
     }
 
     private fun buildDataSourceFactory(useBandwidthMeter: Boolean): DataSource.Factory = buildDataSourceFactory(if (useBandwidthMeter) bandwidthMeter else null)
@@ -162,6 +202,31 @@ class VideoFragment : Fragment() {
         listener = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        /*
+       * A simple configuration change such as screen rotation will destroy this activity
+       * so we'll save the player state here in a bundle (that we can later access in onCreate) before everything is lost
+       * NOTE: we cannot save player state in onDestroy like we did in onPause and onStop
+       * the reason being our activity will be recreated from scratch and we would have lost all members (e.g. variables, objects) of this activity
+       */
+        if (exoPlayer == null) {
+            outState.putLong(PLAYBACK_POSITION, playbackPosition)
+            outState.putInt(CURRENT_WINDOW_INDEX, currentWindow)
+            outState.putBoolean(AUTOPLAY, autoPlay)
+        }
+    }
+
+    // This is just an implementation detail to have a pure full screen experience. Nothing fancy here
+    /* @SuppressLint("InlinedApi")
+     private fun hideSystemUi() {
+         playerView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                 or View.SYSTEM_UI_FLAG_FULLSCREEN
+                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+     }*/
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }

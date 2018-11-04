@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.FavoriteAdapter
 import com.example.yom.exchangeapp.entity.ExchangeEntity
@@ -26,15 +24,16 @@ class FavoriteFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
-        updateFragment(rcyFavorite, exchangeViewModel, activity!!)
+        updateFragment()
+        //updateFragment()
+        //updateFragment(rcyFavorite, exchangeViewModel, activity!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
-    fun updateFragment(favoriteRcy: RecyclerView, exchangeViewModel: ExchangeViewModel, activity: FragmentActivity) {
+    /*fun updateFragment(favoriteRcy: RecyclerView, exchangeViewModel: ExchangeViewModel, activity: FragmentActivity) {
         favoriteRcy.layoutManager = LinearLayoutManager(activity)
         adapter = FavoriteAdapter(favoriteRcy.context)
         favoriteRcy.adapter = adapter
@@ -44,6 +43,24 @@ class FavoriteFragment : Fragment() {
             adapter.notifyDataSetChanged()
 
         })
+    }*/
+
+    private fun updateFragment() {
+        exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
+        exchangeViewModel.updateDatas()
+        rcyFavorite.layoutManager = LinearLayoutManager(activity)
+        adapter = FavoriteAdapter(rcyFavorite.context)
+        rcyFavorite.adapter = adapter
+        exchangeViewModel.allList.observe(this, Observer<List<ExchangeEntity>> {
+            (rcyFavorite.adapter as FavoriteAdapter).setNewFavoriteList(it)
+            adapter.notifyDataSetChanged()
+        })
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser)
+            updateFragment()
     }
 
 }
