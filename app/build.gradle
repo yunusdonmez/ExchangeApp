@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
 ext.retrofit_version = '2.4.0'
 
 android {
@@ -57,4 +59,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-jackson:$jackson_version"
 
+    //firebase
+    implementation 'com.google.firebase:firebase-core:16.0.1'
 }
