@@ -16,7 +16,6 @@ import at.huber.youtubeExtractor.YtFile
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.SmallVideoAdapter
 import com.example.yom.exchangeapp.dto.SmallVideoDTO
-import com.example.yom.exchangeapp.entity.YoutubeDTO
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -37,10 +36,11 @@ class VideoFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     var exoPlayer: SimpleExoPlayer? = null
+    var currentVideo: String? = null
+    var currentVideoTitle: String? = null
+    private lateinit var playerView: PlayerView
     lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var bandwidthMeter: DefaultBandwidthMeter
-    private lateinit var playerView: PlayerView
-    //private lateinit var controllerView: PlayerControlView
 
     // autoplay = false
     private var autoPlay = false
@@ -74,23 +74,24 @@ class VideoFragment : Fragment() {
 
         playerView = fragmentVideoFragment.findViewById(R.id.simpleExoPlayerView)
 
-        val videoList = ArrayList<YoutubeDTO>()
-        videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
-        videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
-        videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
-        videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))
-        initializePlayer()
+        /* val videoList = ArrayList<YoutubeDTO>()
+         videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
+         videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
+         videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
+         videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))*/
+        currentVideo = param1
+        currentVideoTitle = param2
+        //initializePlayer()
         return fragmentVideoFragment
     }
 
     fun initializePlayer() {
+        txtTitle.text = currentVideoTitle
         bandwidthMeter = DefaultBandwidthMeter()
         mediaDataSourceFactory = buildDataSourceFactory(true)
         if (exoPlayer == null)
             exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(context), DefaultTrackSelector(), DefaultLoadControl())
 
-        //controllerView = fragmentVideoFragment.findViewById(R.id.exo_controller)
-        //controllerView. = playerView
         playerView.apply {
             player = exoPlayer
             useController = true
@@ -111,25 +112,26 @@ class VideoFragment : Fragment() {
                     Toast.makeText(context, "Video Başlatılamadı", Toast.LENGTH_LONG).show()
                 }
             }
-        }.extract("http://youtube.com/watch?v=$param1", true, true)
+        }.extract("http://youtube.com/watch?v=$currentVideo", true, true)
         exoPlayer?.playWhenReady = autoPlay
         exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        txtTitle.text = param2
+        txtTitle.text = currentVideoTitle
         val list = ArrayList<SmallVideoDTO>()
         list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/Cs992IBPIcA/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLA-Z9_1VsKR5nS8fui2ZhrUFRkW1A"))
         list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/hesOSQ9tQeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDf2Qu4kEqeEGTZMc4-Yvcz7K_vEQ"))
         list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/5eA8Sa6Q-k0/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDVG-f-3IkbSsSKxnfqL3aGYzSppA"))
         list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/F_CnCvSyzT4/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCocWFcoVBkFWXBaVkI80EAKNd2FA"))
 
-        val smallVideoAdapter = SmallVideoAdapter(list)
+        val smallVideoAdapter = SmallVideoAdapter(list, VideoFragment@ this)
         rvOtherVideos.apply {
             adapter = smallVideoAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
+        initializePlayer()
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -155,29 +157,26 @@ class VideoFragment : Fragment() {
     }
 
     //exoplayer çıkış
-    private fun releasePlayer() {
+    fun releasePlayer() {
         if (exoPlayer != null) {
             playbackPosition = exoPlayer!!.currentPosition
             currentWindow = exoPlayer!!.currentWindowIndex
             autoPlay = exoPlayer!!.playWhenReady
             exoPlayer!!.release()
+            autoPlay = false
             exoPlayer = null
         }
     }
 
-    /*private fun pausePlayer() {
-        if (Util.SDK_INT <= 23) releasePlayer()
-        /*exoPlayer?.playWhenReady = false
-        exoPlayer?.playbackState*/
-    }*/
-
     private fun startPlayer() {
-        // exoPlayer?.prepare()
         if (Util.SDK_INT > 23) {
             initializePlayer()
         }
-        /*exoPlayer?.playWhenReady = true
-        exoPlayer?.playbackState*/
+    }
+
+    fun resetProperties() {
+        currentWindow = 0
+        playbackPosition = 0
     }
 
     private fun buildDataSourceFactory(useBandwidthMeter: Boolean): DataSource.Factory = buildDataSourceFactory(if (useBandwidthMeter) bandwidthMeter else null)
@@ -185,10 +184,6 @@ class VideoFragment : Fragment() {
     private fun buildDataSourceFactory(bandwidthMeter: DefaultBandwidthMeter?): DataSource.Factory = DefaultDataSourceFactory(context, bandwidthMeter, buildHttpDataSourceFactory(bandwidthMeter))
 
     private fun buildHttpDataSourceFactory(bandwidthMeter: DefaultBandwidthMeter?): HttpDataSource.Factory? = DefaultHttpDataSourceFactory("exoplayer-codelab", bandwidthMeter)
-
-    /*fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }*/
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

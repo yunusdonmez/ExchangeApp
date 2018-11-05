@@ -23,14 +23,14 @@ class MainActivity : AppCompatActivity() {
         videoPagerAdapter = VideoPagerAdapter(supportFragmentManager)
         vpMain.apply {
             adapter = videoPagerAdapter
-            offscreenPageLimit = 1
+            offscreenPageLimit = 3
         }
 
         val videoList = ArrayList<YoutubeDTO>()
         videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
-        videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
-        videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
-        videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))
+        //videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
+        // videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
+        //videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))
 
 
         (vpMain.adapter as VideoPagerAdapter).setVideoList(videoList)

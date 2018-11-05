@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.dto.SmallVideoDTO
+import com.example.yom.exchangeapp.ui.VideoFragment
 
-class SmallVideoAdapter(private val trailerList: ArrayList<SmallVideoDTO>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SmallVideoAdapter(private val trailerList: ArrayList<SmallVideoDTO>, private var fragment: VideoFragment)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -17,6 +19,6 @@ class SmallVideoAdapter(private val trailerList: ArrayList<SmallVideoDTO>) : Rec
     override fun getItemCount(): Int = trailerList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SmallVideoViewHolder).bindTo(trailerList[position])
+        (holder as SmallVideoViewHolder).bindTo(trailerList[position], fragment)
     }
 }
