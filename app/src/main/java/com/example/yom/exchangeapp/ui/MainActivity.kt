@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.VideoPagerAdapter
-import com.example.yom.exchangeapp.entity.YoutubeDTO
+import com.example.yom.exchangeapp.dto.VideosDTO
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var exchangeViewModel: ExchangeViewModel
     private lateinit var exchangePagerAdapter: ExchangePagerAdapter*/
     private lateinit var videoPagerAdapter: VideoPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity() {
             offscreenPageLimit = 3
         }
 
-        val videoList = ArrayList<YoutubeDTO>()
-        videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
+        val videoList = ArrayList<VideosDTO>()
+        videoList.add(VideosDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler", "ss"))
         //videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
         // videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
         //videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))

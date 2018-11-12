@@ -7,16 +7,9 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 
-class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
+class ExchangeAdapter(list: ArrayList<ExchangeEntity>, var con: Context) : RecyclerView.Adapter<ExchangeViewHolder>(), Filterable {
     private var list = ArrayList<ExchangeEntity>()
-    private var listFiltered = ArrayList<ExchangeEntity>()
-    var con: Context
-
-    constructor(list: ArrayList<ExchangeEntity>, con: Context) : super() {
-        this.list = list
-        listFiltered = list
-        this.con = con
-    }
+    private var listFiltered = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder(parent)
 
@@ -29,11 +22,11 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                var charString: String = constraint.toString()
+                val charString: String = constraint.toString()
                 if (charString.isEmpty()) {
                     listFiltered = list
                 } else {
-                    var filteredList = ArrayList<ExchangeEntity>()
+                    val filteredList = ArrayList<ExchangeEntity>()
                     for (s: ExchangeEntity in list) {
                         if (s.moneyType.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(s)
@@ -41,7 +34,7 @@ class ExchangeAdapter : RecyclerView.Adapter<ExchangeViewHolder>, Filterable {
                     }
                     listFiltered = filteredList
                 }
-                var filterResults = FilterResults()
+                val filterResults = FilterResults()
                 filterResults.values = listFiltered
                 return filterResults
             }

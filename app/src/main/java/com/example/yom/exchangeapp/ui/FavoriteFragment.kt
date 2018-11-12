@@ -25,35 +25,22 @@ class FavoriteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         updateFragment()
-        //updateFragment()
-        //updateFragment(rcyFavorite, exchangeViewModel, activity!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
-    /*fun updateFragment(favoriteRcy: RecyclerView, exchangeViewModel: ExchangeViewModel, activity: FragmentActivity) {
-        favoriteRcy.layoutManager = LinearLayoutManager(activity)
-        adapter = FavoriteAdapter(favoriteRcy.context)
-        favoriteRcy.adapter = adapter
-        //exchangeViewModel.updateDatas()
-        exchangeViewModel.allList.observe(activity, Observer<List<ExchangeEntity>> {
-            (favoriteRcy.adapter as FavoriteAdapter).setNewFavoriteList(it)
-            adapter.notifyDataSetChanged()
-
-        })
-    }*/
-
     private fun updateFragment() {
         exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
         exchangeViewModel.updateDatas()
-        rcyFavorite.layoutManager = LinearLayoutManager(activity)
-        adapter = FavoriteAdapter(rcyFavorite.context)
-        rcyFavorite.adapter = adapter
+        var list: List<ExchangeEntity>
         exchangeViewModel.allList.observe(this, Observer<List<ExchangeEntity>> {
-            (rcyFavorite.adapter as FavoriteAdapter).setNewFavoriteList(it)
-            adapter.notifyDataSetChanged()
+            list = it
+            rcyFavorite.setHasFixedSize(true)
+            rcyFavorite.layoutManager = LinearLayoutManager(activity)
+            adapter = FavoriteAdapter(rcyFavorite.context, list)
+            rcyFavorite.adapter = adapter
         })
     }
 

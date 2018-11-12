@@ -15,7 +15,7 @@ import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.SmallVideoAdapter
-import com.example.yom.exchangeapp.dto.SmallVideoDTO
+import com.example.yom.exchangeapp.dto.VideosDTO
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -24,24 +24,23 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.layout_video.*
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class VideoFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
-    var exoPlayer: SimpleExoPlayer? = null
+    private var exoPlayer: SimpleExoPlayer? = null
     var currentVideo: String? = null
     var currentVideoTitle: String? = null
     private lateinit var playerView: PlayerView
     lateinit var mediaDataSourceFactory: DataSource.Factory
     private lateinit var bandwidthMeter: DefaultBandwidthMeter
 
+    val videoList = ArrayList<VideosDTO>()
     // autoplay = false
     private var autoPlay = false
 
@@ -50,16 +49,29 @@ class VideoFragment : Fragment() {
     private var playbackPosition: Long = 0
 
     // constant fields for saving and restoring bundle
-    val AUTOPLAY = "autoplay"
-    val CURRENT_WINDOW_INDEX = "current_window_index"
-    val PLAYBACK_POSITION = "playback_position"
+    private val AUTOPLAY = "autoplay"
+    private val CURRENT_WINDOW_INDEX = "current_window_index"
+    private val PLAYBACK_POSITION = "playback_position"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("value")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(data: DataSnapshot) {
+                for (dataItem in data.children) {
+                    //Log.e("Videolist", dataItem.child("baslik").value.toString())
+                    //Log.i("dataSnapshot", "")
+                    videoList.add(VideosDTO(dataItem.child("baslik").value.toString(), dataItem.child("link").value.toString(), dataItem.child("resim").value.toString()))
+                }
+                currentVideo = videoList[0].videoLink
+                currentVideoTitle = videoList[0].viodeTitle
+            }
+        })
         if (savedInstanceState != null) {
             playbackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0)
             currentWindow = savedInstanceState.getInt(CURRENT_WINDOW_INDEX, 0)
@@ -71,18 +83,17 @@ class VideoFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val fragmentVideoFragment = inflater.inflate(R.layout.fragment_video, container, false)
-
         playerView = fragmentVideoFragment.findViewById(R.id.simpleExoPlayerView)
-
-        /* val videoList = ArrayList<YoutubeDTO>()
-         videoList.add(YoutubeDTO("Cs992IBPIcA", "2019 Taslak Bütçesi\nVergiler"))
-         videoList.add(YoutubeDTO("hesOSQ9tQeI", "Dünya Piyasalarında\nSon Durum"))
-         videoList.add(YoutubeDTO("5eA8Sa6Q-k0", "Enflasyon&Faizler"))
-         videoList.add(YoutubeDTO("F_CnCvSyzT4", "Tüketim Çöktü(Grafikli)"))*/
-        currentVideo = param1
-        currentVideoTitle = param2
-        //initializePlayer()
         return fragmentVideoFragment
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val smallVideoAdapter = SmallVideoAdapter(videoList, VideoFragment@ this)
+        rvOtherVideos.apply {
+            adapter = smallVideoAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     fun initializePlayer() {
@@ -115,23 +126,6 @@ class VideoFragment : Fragment() {
         }.extract("http://youtube.com/watch?v=$currentVideo", true, true)
         exoPlayer?.playWhenReady = autoPlay
         exoPlayer?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        txtTitle.text = currentVideoTitle
-        val list = ArrayList<SmallVideoDTO>()
-        list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/Cs992IBPIcA/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLA-Z9_1VsKR5nS8fui2ZhrUFRkW1A"))
-        list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/hesOSQ9tQeI/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDf2Qu4kEqeEGTZMc4-Yvcz7K_vEQ"))
-        list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/5eA8Sa6Q-k0/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDVG-f-3IkbSsSKxnfqL3aGYzSppA"))
-        list.add(SmallVideoDTO("", "https://i.ytimg.com/vi/F_CnCvSyzT4/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCocWFcoVBkFWXBaVkI80EAKNd2FA"))
-
-        val smallVideoAdapter = SmallVideoAdapter(list, VideoFragment@ this)
-        rvOtherVideos.apply {
-            adapter = smallVideoAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        }
-        initializePlayer()
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -169,8 +163,10 @@ class VideoFragment : Fragment() {
     }
 
     private fun startPlayer() {
-        if (Util.SDK_INT > 23) {
-            initializePlayer()
+        if (currentVideo != null) {
+            if (Util.SDK_INT > 23) {
+                initializePlayer()
+            }
         }
     }
 
@@ -224,16 +220,5 @@ class VideoFragment : Fragment() {
      }*/
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                VideoFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
     }
 }

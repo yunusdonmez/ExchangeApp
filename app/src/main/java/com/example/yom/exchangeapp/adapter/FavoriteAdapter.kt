@@ -4,13 +4,8 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.entity.ExchangeEntity
-import java.util.*
 
-class FavoriteAdapter(context: Context) : RecyclerView.Adapter<FavoriteViewHolder>() {
-
-
-    private var moneyList: List<ExchangeEntity> = Collections.emptyList()
-    private var context: Context = context
+class FavoriteAdapter(private var context: Context, private var moneyList: List<ExchangeEntity>) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
 
@@ -21,8 +16,8 @@ class FavoriteAdapter(context: Context) : RecyclerView.Adapter<FavoriteViewHolde
 
     override fun getItemCount(): Int = moneyList.size
 
-    fun setNewFavoriteList(newMoneyList: List<ExchangeEntity>) {
+    /*fun setNewFavoriteList(newMoneyList: List<ExchangeEntity>) {
         moneyList = newMoneyList
         notifyDataSetChanged()
-    }
+    }*/
 }
