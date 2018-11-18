@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 
 class ExchangeAdapter(list: ArrayList<ExchangeEntity>, var con: Context) : RecyclerView.Adapter<ExchangeViewHolder>(), Filterable {
-    private var list = ArrayList<ExchangeEntity>()
+    private var allList = list
     private var listFiltered = list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder(parent)
@@ -24,10 +24,10 @@ class ExchangeAdapter(list: ArrayList<ExchangeEntity>, var con: Context) : Recyc
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString: String = constraint.toString()
                 if (charString.isEmpty()) {
-                    listFiltered = list
+                    listFiltered = allList
                 } else {
                     val filteredList = ArrayList<ExchangeEntity>()
-                    for (s: ExchangeEntity in list) {
+                    for (s: ExchangeEntity in allList) {
                         if (s.moneyType.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(s)
                         }

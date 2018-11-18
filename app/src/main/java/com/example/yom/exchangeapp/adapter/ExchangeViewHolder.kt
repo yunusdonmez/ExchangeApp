@@ -2,9 +2,15 @@ package com.example.yom.exchangeapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
@@ -21,7 +27,8 @@ class ExchangeViewHolder(parent: ViewGroup)
     private val valueBuying by lazy { itemView.findViewById<TextView>(R.id.txtValueBuying) }
     private val valueSelling by lazy { itemView.findViewById<TextView>(R.id.txtValueSelling) }
     private val imgFlag by lazy { itemView.findViewById<ImageView>(R.id.imgFlag) }
-    private val imgFollow by lazy { itemView.findViewById<ImageView>(R.id.imgFavoriteButton) }
+    //private val imgFollow by lazy { itemView.findViewById<ImageView>(R.id.imgFavoriteButton) }
+    private val imgFollow by lazy { itemView.findViewById<ToggleButton>(R.id.imgFavoriteButton) }
 
     fun bindTo(exchangeDTO: ExchangeEntity, context: Context) {
         currencyType.text = exchangeDTO.moneyType.toUpperCase().replace("-", " ")
@@ -34,41 +41,45 @@ class ExchangeViewHolder(parent: ViewGroup)
         valueBuying.text = "Alış : " + df.format(num2).toString() + " TL"
         Glide.with(itemView.context).load(exchangeDTO.flag).into(imgFlag)
 
-
         //favori kontrol
-        if (exchangeDTO.isFollow) {
-            //  Log.i("yunus", """Kontrole girildi ${exchangeDTO.code} """)
-            imgFollow.setBackgroundResource(R.drawable.ic_favorite)
-        } else {
-            //   Log.i("yunus", """Kontrole girilmedi ${exchangeDTO.code} """)
-            imgFollow.setBackgroundResource(R.drawable.ic_non_favorite)
-        }
+        imgFollow.isChecked = exchangeDTO.isFollow
 
+        val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
+        scaleAnimation.duration = 500
+        val bounceInterpolator = BounceInterpolator()
+        scaleAnimation.interpolator = bounceInterpolator
+
+        imgFollow.setOnCheckedChangeListener(object : View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+            override fun onClick(view: View?) {
+
+            }
+
+            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                buttonView?.startAnimation(scaleAnimation)
+                val db = Room.databaseBuilder(
+                        context.applicationContext,
+                        ExchangeDB::class.java,
+                        "exchangeDB"
+                ).fallbackToDestructiveMigration().build()
+                if (exchangeDTO.isFollow) {
+                    exchangeDTO.isFollow = false
+                    Thread {
+                        //db.exchDao().insertAll(exchangeDTO)
+                        db.exchDao().delete(exchangeDTO)
+                    }.start()
+                } else {
+                    exchangeDTO.isFollow = true
+                    Thread {
+                        //db.exchDao().insertAll(exchangeDTO)
+                        db.exchDao().insertItem(exchangeDTO)
+                    }.start()
+                }
+                db.close()
+            }
+        })
         //Favorilere ekleme çıkarma
         imgFollow.setOnClickListener {
-            val db = Room.databaseBuilder(
-                    context.applicationContext,
-                    ExchangeDB::class.java,
-                    "exchangeDB"
-            ).fallbackToDestructiveMigration().build()
-            if (exchangeDTO.isFollow) {
-                it.setBackgroundResource(R.drawable.ic_non_favorite)
-                exchangeDTO.isFollow = false
-                Thread {
-                    //db.exchDao().insertAll(exchangeDTO)
-                    db.exchDao().delete(exchangeDTO)
-                    //Log.i("yunus", "Item silindi:${exchangeDTO.code}")
-                }.start()
-            } else {
-                exchangeDTO.isFollow = true
-                it.setBackgroundResource(R.drawable.ic_favorite)
-                Thread {
-                    //db.exchDao().insertAll(exchangeDTO)
-                    db.exchDao().insertItem(exchangeDTO)
-                    // Log.i("yunus", "Favorilere eklendi:${exchangeDTO.code}")
-                }.start()
-            }
-            db.close()
+
         }
     }
 }

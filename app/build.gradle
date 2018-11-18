@@ -6,7 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'com.google.gms.google-services'
 
 ext.retrofit_version = '2.4.0'
 
@@ -62,4 +61,6 @@ dependencies {
     //firebase
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-core:16.0.5'
+
 }
+apply plugin: 'com.google.gms.google-services'

@@ -39,11 +39,4 @@ class VideoPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         notifyDataSetChanged()
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        return when (position) {
-            0 -> "Döviz"
-            1 -> "Takip Ettiklerin"
-            else -> "Finans Yorumları"
-        }
-    }
 }

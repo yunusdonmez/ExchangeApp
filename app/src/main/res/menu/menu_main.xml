@@ -10,8 +10,17 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_search_black_24dp"
         android:iconifiedByDefault="true"
-        android:padding="5dp"
-        android:title="Ara"
+        android:padding="4dp"
+        android:title="@string/ara"
         app:showAsAction="always"
         appcombat:actionViewClass="android.widget.SearchView" />
+    <item
+        android:id="@+id/actionVert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_more_vert_24dp"
+        android:iconifiedByDefault="true"
+        android:padding="4dp"
+        android:title="@string/menu"
+        app:showAsAction="ifRoom" />
 </menu>

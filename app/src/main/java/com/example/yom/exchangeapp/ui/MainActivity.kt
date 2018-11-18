@@ -1,10 +1,13 @@
 package com.example.yom.exchangeapp.ui
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.VideoPagerAdapter
 import com.example.yom.exchangeapp.dto.VideosDTO
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +39,26 @@ class MainActivity : AppCompatActivity() {
 
         (vpMain.adapter as VideoPagerAdapter).setVideoList(videoList)
         tabsMain.setupWithViewPager(vpMain)
+        tabsMain.getTabAt(0)!!.setIcon(R.drawable.ic_home_24dp)
+        tabsMain.getTabAt(1)!!.setIcon(R.drawable.ic_favorite_black_24dp)
+        tabsMain.getTabAt(2)!!.setIcon(R.drawable.ic_slow_motion_video_24dp)
+        tabsMain.getTabAt(0)!!.icon?.setColorFilter(Color.parseColor("#263238"), PorterDuff.Mode.SRC_IN)
+
+        // vpMain.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabsMain))
+
+        tabsMain.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tabItem: TabLayout.Tab?) {
+                tabItem!!.icon!!.setColorFilter(Color.parseColor("#777777"), PorterDuff.Mode.SRC_IN)
+            }
+
+            override fun onTabSelected(tabItem: TabLayout.Tab?) {
+                tabItem!!.icon!!.setColorFilter(Color.parseColor("#263238"), PorterDuff.Mode.SRC_IN)
+            }
+
+        })
 
     }
 

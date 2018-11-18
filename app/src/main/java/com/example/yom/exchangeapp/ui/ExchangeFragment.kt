@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.ExchangeAdapter
@@ -64,26 +64,31 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
                               savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_exchange, container, false)
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // val url = "https://www.doviz.com/api/v1/currencies/all/latest"
         exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
+        pulToRefresh.setOnRefreshListener {
+            pulToRefresh.isRefreshing = false
+            SendRequest.getAll().enqueue(this@ExchangeFragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         SendRequest.getAll().enqueue(this)
         inflater!!.inflate(R.menu.menu_main, menu)
         val item: MenuItem = menu!!.findItem(R.id.actionSearch)
-        searchView = MenuItemCompat.getActionView(item) as SearchView
+
+        searchView = item.actionView as SearchView
         searchName(searchView)
     }
 
     override fun onDestroyOptionsMenu() {
         rcyExchange.setHasFixedSize(true)
         rcyExchange.layoutManager = LinearLayoutManager(activity)
+        rcyExchange.itemAnimator = DefaultItemAnimator()
         adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
         rcyExchange.adapter = adapter
         super.onDestroyOptionsMenu()
