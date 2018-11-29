@@ -61,12 +61,16 @@
                 tools:text="Satış : 00,00 TL" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imgFavoriteButtonFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:background="@drawable/ic_favorite" />
+        <ToggleButton
+            android:id="@+id/imgFvrButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/button_favorite"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
 
     </LinearLayout>
 

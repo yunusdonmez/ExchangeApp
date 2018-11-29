@@ -19,7 +19,7 @@ class FavoriteFragment : Fragment() {
 
 
     lateinit var adapter: FavoriteAdapter
-    lateinit var exchangeViewModel: ExchangeViewModel
+    private lateinit var exchangeViewModel: ExchangeViewModel
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

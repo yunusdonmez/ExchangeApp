@@ -34,6 +34,8 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
     override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
         var i = 0
         exchangeList.clear()
+        /* if (response.body()==null)
+             return*/
         while (i < response.body()!!.size) {
             if (exchangeViewModel.getItemCounts(response.body()!![i].code) > 0) {
                 exchangeList.add(ExchangeEntity(

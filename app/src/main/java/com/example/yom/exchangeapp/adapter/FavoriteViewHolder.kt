@@ -2,9 +2,15 @@ package com.example.yom.exchangeapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
@@ -20,7 +26,7 @@ class FavoriteViewHolder(parent: ViewGroup)
     private val valueBuying by lazy { itemView.findViewById<TextView>(R.id.txtValueBuyingFavorite) }
     private val valueSelling by lazy { itemView.findViewById<TextView>(R.id.txtValueSellingFavorite) }
     private val imgFlag by lazy { itemView.findViewById<ImageView>(R.id.imgFlagFavorite) }
-    private val imgFollow by lazy { itemView.findViewById<ImageView>(R.id.imgFavoriteButtonFavorite) }
+    private val imgFollow by lazy { itemView.findViewById<ToggleButton>(R.id.imgFvrButton) }
 
     fun bindTo(exchangeDTO: ExchangeEntity, context: Context) {
         currencyType.text = exchangeDTO.moneyType.toUpperCase().replace("-", " ")
@@ -31,12 +37,43 @@ class FavoriteViewHolder(parent: ViewGroup)
         valueSelling.text = "Satış : " + df.format(num).toString() + " TL"
         valueBuying.text = "Alış : " + df.format(num2).toString() + " TL"
         Glide.with(itemView.context).load(exchangeDTO.flag).into(imgFlag)
-        if (exchangeDTO.isFollow) {
-            imgFollow.setBackgroundResource(R.drawable.ic_favorite)
-        } else {
-            imgFollow.setBackgroundResource(R.drawable.ic_non_favorite)
-        }
-        imgFollow.setOnClickListener {
+        //favori kontrol
+        imgFollow.isChecked = exchangeDTO.isFollow
+        val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
+        scaleAnimation.duration = 500
+        val bounceInterpolator = BounceInterpolator()
+        scaleAnimation.interpolator = bounceInterpolator
+
+        imgFollow.setOnCheckedChangeListener(object : View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+            override fun onClick(v: View?) {
+            }
+
+            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                buttonView?.startAnimation(scaleAnimation)
+                val db = Room.databaseBuilder(
+                        context.applicationContext,
+                        ExchangeDB::class.java,
+                        "exchangeDB"
+                ).fallbackToDestructiveMigration().build()
+                if (exchangeDTO.isFollow) {
+                    exchangeDTO.isFollow = false
+                    Thread {
+                        //db.exchDao().insertAll(exchangeDTO)
+                        db.exchDao().delete(exchangeDTO)
+                    }.start()
+                } else {
+                    exchangeDTO.isFollow = true
+                    Thread {
+                        //db.exchDao().insertAll(exchangeDTO)
+                        db.exchDao().insertItem(exchangeDTO)
+                    }.start()
+                }
+                db.close()
+            }
+
+        })
+
+        /*imgFollow.setOnClickListener {
 
             val db = Room.databaseBuilder(
                     context.applicationContext,
@@ -62,7 +99,7 @@ class FavoriteViewHolder(parent: ViewGroup)
             }
             db.close()
 
-        }
+        }*/
 
     }
 }

@@ -6,7 +6,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 class RetrofitClient {
 
     companion object {
-        private const val BASE_URL = "https://www.doviz.com/api/v1/currencies/all/"
+        private const val BASE_URL = "https://api.canlidoviz.com/web/"
 
         fun getClient(): Retrofit {
 
