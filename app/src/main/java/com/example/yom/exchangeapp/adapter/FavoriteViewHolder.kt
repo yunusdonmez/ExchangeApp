@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -43,13 +42,9 @@ class FavoriteViewHolder(parent: ViewGroup)
         scaleAnimation.duration = 500
         val bounceInterpolator = BounceInterpolator()
         scaleAnimation.interpolator = bounceInterpolator
-
-        imgFollow.setOnCheckedChangeListener(object : View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-            override fun onClick(v: View?) {
-            }
-
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                buttonView?.startAnimation(scaleAnimation)
+        imgFollow.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                view?.startAnimation(scaleAnimation)
                 val db = Room.databaseBuilder(
                         context.applicationContext,
                         ExchangeDB::class.java,
@@ -72,34 +67,5 @@ class FavoriteViewHolder(parent: ViewGroup)
             }
 
         })
-
-        /*imgFollow.setOnClickListener {
-
-            val db = Room.databaseBuilder(
-                    context.applicationContext,
-                    ExchangeDB::class.java,
-                    "exchangeDB"
-            ).fallbackToDestructiveMigration().build()
-            if (exchangeDTO.isFollow) {
-                it.setBackgroundResource(R.drawable.ic_non_favorite)
-                exchangeDTO.isFollow = false
-                Thread {
-                    //db.exchDao().insertAll(exchangeDTO)
-                    db.exchDao().delete(exchangeDTO)
-                    //Log.i("yunus", "Item silindi:${exchangeDTO.code}")
-                }.start()
-            } else {
-                exchangeDTO.isFollow = true
-                it.setBackgroundResource(R.drawable.ic_favorite)
-                Thread {
-                    //db.exchDao().insertAll(exchangeDTO)
-                    db.exchDao().insertItem(exchangeDTO)
-                    // Log.i("yunus", "Favorilere eklendi:${exchangeDTO.code}")
-                }.start()
-            }
-            db.close()
-
-        }*/
-
     }
 }

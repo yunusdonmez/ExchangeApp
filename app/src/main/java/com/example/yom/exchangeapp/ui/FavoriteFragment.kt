@@ -1,9 +1,7 @@
 package com.example.yom.exchangeapp.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +26,7 @@ class FavoriteFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
@@ -48,6 +47,26 @@ class FavoriteFragment : Fragment() {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser)
             updateFragment()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_main, menu)
+        val item: MenuItem = menu!!.findItem(R.id.actionSearch)
+        item.isVisible = false
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.about -> {
+                AboutActivity()
+                true
+            }
+            R.id.newPage -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

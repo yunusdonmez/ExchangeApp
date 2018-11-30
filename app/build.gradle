@@ -31,6 +31,7 @@ dependencies {
     def room_version = "2.1.0-alpha01"
 
     implementation "androidx.room:room-runtime:$room_version"
+    implementation 'com.google.android.material:material:1.0.0-rc02'
     kapt "androidx.room:room-compiler:$room_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

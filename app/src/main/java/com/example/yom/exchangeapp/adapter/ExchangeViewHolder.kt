@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ToggleButton
@@ -48,14 +47,9 @@ class ExchangeViewHolder(parent: ViewGroup)
         scaleAnimation.duration = 500
         val bounceInterpolator = BounceInterpolator()
         scaleAnimation.interpolator = bounceInterpolator
-
-        imgFollow.setOnCheckedChangeListener(object : View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+        imgFollow.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
-
-            }
-
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                buttonView?.startAnimation(scaleAnimation)
+                view?.startAnimation(scaleAnimation)
                 val db = Room.databaseBuilder(
                         context.applicationContext,
                         ExchangeDB::class.java,
@@ -76,10 +70,7 @@ class ExchangeViewHolder(parent: ViewGroup)
                 }
                 db.close()
             }
-        })
-        //Favorilere ekleme çıkarma
-        imgFollow.setOnClickListener {
 
-        }
+        })
     }
 }

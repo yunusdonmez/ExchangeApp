@@ -23,10 +23,10 @@ import retrofit2.Response
 class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
 
 
-    lateinit var searchView: SearchView
+    private lateinit var searchView: SearchView
     lateinit var adapter: ExchangeAdapter
-    var exchangeList = ArrayList<ExchangeEntity>()
-    lateinit var exchangeViewModel: ExchangeViewModel
+    private var exchangeList = ArrayList<ExchangeEntity>()
+    private lateinit var exchangeViewModel: ExchangeViewModel
     override fun onFailure(call: Call<List<MoneyListResponse>>, t: Throwable) {
         Log.e("Retrofit", "$t")
     }

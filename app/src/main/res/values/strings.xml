@@ -9,4 +9,6 @@
     <string name="youtube_photos">Youtube Photos</string>
     <string name="menu">menu</string>
     <string name="ara">Ara</string>
+    <string name="about">About</string>
+    <string name="title_activity_about">AboutActivity</string>
 </resources>

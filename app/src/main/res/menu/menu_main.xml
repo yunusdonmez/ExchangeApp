@@ -22,5 +22,14 @@
         android:iconifiedByDefault="true"
         android:padding="4dp"
         android:title="@string/menu"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:title="@string/about" />
+            <item
+                android:id="@+id/newPage"
+                android:title="New Page" />
+        </menu>
+    </item>
 </menu>
