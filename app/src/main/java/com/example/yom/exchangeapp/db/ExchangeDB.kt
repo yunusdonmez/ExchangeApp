@@ -33,5 +33,4 @@ abstract class ExchangeDB : RoomDatabase() {
             return INSTANCE
         }
     }
-
 }

@@ -34,8 +34,6 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
     override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
         var i = 0
         exchangeList.clear()
-        /* if (response.body()==null)
-             return*/
         while (i < response.body()!!.size) {
             if (exchangeViewModel.getItemCounts(response.body()!![i].code) > 0) {
                 exchangeList.add(ExchangeEntity(
@@ -70,7 +68,6 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // val url = "https://www.doviz.com/api/v1/currencies/all/latest"
         exchangeViewModel = ViewModelProviders.of(this).get(ExchangeViewModel::class.java)
         pulToRefresh.setOnRefreshListener {
             pulToRefresh.isRefreshing = false

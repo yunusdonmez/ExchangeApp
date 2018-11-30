@@ -59,13 +59,10 @@ class VideoFragment : Fragment() {
         val myRef = database.getReference("value")
         myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onDataChange(data: DataSnapshot) {
                 for (dataItem in data.children) {
-                    //Log.e("Videolist", dataItem.child("baslik").value.toString())
-                    //Log.i("dataSnapshot", "")
                     videoList.add(VideosDTO(dataItem.child("baslik").value.toString(), dataItem.child("link").value.toString(), dataItem.child("resim").value.toString()))
                 }
                 currentVideo = videoList[0].videoLink

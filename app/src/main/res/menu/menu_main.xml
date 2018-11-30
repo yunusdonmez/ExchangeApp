@@ -29,7 +29,7 @@
                 android:title="@string/about" />
             <item
                 android:id="@+id/newPage"
-                android:title="New Page" />
+                android:title="@string/new_page" />
         </menu>
     </item>
 </menu>

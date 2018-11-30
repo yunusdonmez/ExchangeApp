@@ -14,29 +14,35 @@
         android:paddingTop="8dp">
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_previous_description"
             android:id="@id/exo_prev"
             style="@style/ExoMediaButton.Previous"
             android:visibility="gone" />
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_rewind_description"
             android:id="@id/exo_rew"
             style="@style/ExoMediaButton.Rewind"
             android:visibility="gone" />
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_play_description"
             android:id="@id/exo_play"
             style="@style/ExoMediaButton.Play" />
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_pause_description"
             android:id="@id/exo_pause"
             style="@style/ExoMediaButton.Pause" />
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_fastforward_description"
             android:id="@id/exo_ffwd"
             style="@style/ExoMediaButton.FastForward"
             android:visibility="gone" />
 
         <ImageButton
+            android:contentDescription="@string/exo_controls_next_description"
             android:id="@id/exo_next"
             style="@style/ExoMediaButton.Next"
             android:visibility="gone" />

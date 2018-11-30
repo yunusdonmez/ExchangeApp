@@ -7,7 +7,6 @@ import com.example.yom.exchangeapp.dao.ExchangeDAO
 import com.example.yom.exchangeapp.db.ExchangeDB
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 
-
 class ExchangeRepository internal constructor(application: Application) {
     private var exchangeDAO: ExchangeDAO
     var allList: LiveData<List<ExchangeEntity>>
@@ -15,9 +14,7 @@ class ExchangeRepository internal constructor(application: Application) {
     init {
         val db = ExchangeDB.getInstance(application)
         exchangeDAO = db!!.exchDao()
-        // countList = exchangeDAO.getCounts()
         allList = exchangeDAO.getAll()
-//        exchangeDAO.deleteAll()
     }
 
     fun insert(moneyList: ExchangeEntity) {
@@ -33,8 +30,6 @@ class ExchangeRepository internal constructor(application: Application) {
 
 private class SelectAsyncTask internal constructor(private val mAsyncTaskDao: ExchangeDAO) : AsyncTask<String, Void, Int>() {
     override fun doInBackground(vararg p0: String?): Int? {
-
-        // Log.e("yunus",mAsyncTaskDao.getItemCounts("USD").toString())
         return mAsyncTaskDao.getItemCounts(p0[0].toString())
     }
 

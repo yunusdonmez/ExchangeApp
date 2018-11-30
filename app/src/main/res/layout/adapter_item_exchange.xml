@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/cardWhite"
-            android:contentDescription="." />
+            android:contentDescription="@string/flag_favorite" />
 
         <TextView
             android:id="@+id/txtCurrencyType"

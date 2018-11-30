@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">ExchangeApp</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="alt_sinir">Üst Sınır</string>
-
+    <string name="alt_sinir">Alt Sınır</string>
     <string name="st_sinir">Üst Sınır</string>
     <string name="bildirim">Bildirim</string>
     <string name="youtube_photos">Youtube Photos</string>
@@ -11,4 +9,6 @@
     <string name="ara">Ara</string>
     <string name="about">About</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="flag_favorite">flag favorite</string>
+    <string name="new_page">New Page</string>
 </resources>

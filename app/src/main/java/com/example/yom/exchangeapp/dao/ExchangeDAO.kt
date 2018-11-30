@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 
-
 @Dao
 interface ExchangeDAO {
     @Query("SELECT * FROM following")
@@ -25,6 +24,7 @@ interface ExchangeDAO {
 
     @Query("DELETE from following")
     fun deleteAll()
+
     @Delete
     fun delete(moneyList: ExchangeEntity)
 }

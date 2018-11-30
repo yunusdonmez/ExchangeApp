@@ -27,6 +27,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabIconTint="@color/colorGray"
             app:tabIconTintMode="src_in"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            tools:targetApi="lollipop" />
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

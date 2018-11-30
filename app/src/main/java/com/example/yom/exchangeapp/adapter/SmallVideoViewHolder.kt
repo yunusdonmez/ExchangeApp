@@ -23,7 +23,6 @@ class SmallVideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fragment.currentVideo = videoList.videoLink
             fragment.initializePlayer()
             //Log.e("video_view_holder","${fragment.CURRENT_WINDOW_INDEX}")
-            //VideoFragment.newInstance(videoList[layoutPosition].videoID, videoList[layoutPosition].videoName)
         }
     }
 }

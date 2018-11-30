@@ -65,7 +65,6 @@ class FavoriteViewHolder(parent: ViewGroup)
                 }
                 db.close()
             }
-
         })
     }
 }

@@ -7,7 +7,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 
-class ExchangeAdapter(list: ArrayList<ExchangeEntity>, var con: Context) : RecyclerView.Adapter<ExchangeViewHolder>(), Filterable {
+class ExchangeAdapter(list: ArrayList<ExchangeEntity>, private var con: Context) : RecyclerView.Adapter<ExchangeViewHolder>(), Filterable {
     private var allList = list
     private var listFiltered = list
 

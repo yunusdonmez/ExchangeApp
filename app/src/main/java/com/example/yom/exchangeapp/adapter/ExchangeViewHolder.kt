@@ -26,7 +26,6 @@ class ExchangeViewHolder(parent: ViewGroup)
     private val valueBuying by lazy { itemView.findViewById<TextView>(R.id.txtValueBuying) }
     private val valueSelling by lazy { itemView.findViewById<TextView>(R.id.txtValueSelling) }
     private val imgFlag by lazy { itemView.findViewById<ImageView>(R.id.imgFlag) }
-    //private val imgFollow by lazy { itemView.findViewById<ImageView>(R.id.imgFavoriteButton) }
     private val imgFollow by lazy { itemView.findViewById<ToggleButton>(R.id.imgFavoriteButton) }
 
     fun bindTo(exchangeDTO: ExchangeEntity, context: Context) {
@@ -70,7 +69,6 @@ class ExchangeViewHolder(parent: ViewGroup)
                 }
                 db.close()
             }
-
         })
     }
 }

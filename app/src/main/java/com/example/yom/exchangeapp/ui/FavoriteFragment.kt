@@ -12,13 +12,10 @@ import com.example.yom.exchangeapp.entity.ExchangeEntity
 import com.example.yom.exchangeapp.model.ExchangeViewModel
 import kotlinx.android.synthetic.main.fragment_favourite.*
 
-
 class FavoriteFragment : Fragment() {
-
 
     lateinit var adapter: FavoriteAdapter
     private lateinit var exchangeViewModel: ExchangeViewModel
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -68,5 +65,4 @@ class FavoriteFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

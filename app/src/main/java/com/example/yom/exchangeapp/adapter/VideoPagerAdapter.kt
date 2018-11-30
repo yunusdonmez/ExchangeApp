@@ -23,14 +23,12 @@ class VideoPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
             }
 
             else -> {
-                //VideoFragment.newInstance(videoList[position - 2].videoLink, videoList[position - 2].viodeTitle)
                 VideoFragment()
             }
         }
     }
 
     override fun getCount(): Int {
-        //return videoList.size + 2
         return 3
     }
 
@@ -38,5 +36,4 @@ class VideoPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         this.videoList = videoList
         notifyDataSetChanged()
     }
-
 }

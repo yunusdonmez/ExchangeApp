@@ -23,6 +23,7 @@
 
         <ImageButton
             android:id="@+id/imgFlagFavorite"
+            android:contentDescription="@string/flag_favorite"
             android:layout_width="33dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
@@ -81,6 +82,7 @@
         android:layout_marginBottom="8dp"
         android:background="@color/colorAccent"
         android:orientation="horizontal"
+        android:baselineAligned="true"
         android:padding="8dp">
 
         <LinearLayout
@@ -93,14 +95,18 @@
             android:orientation="vertical">
 
             <EditText
+                android:autofillHints="@string/st_sinir"
                 android:id="@+id/edtUstSinir"
                 style="@style/txtLimit"
-                android:hint="@string/st_sinir" />
+                android:hint="@string/st_sinir"
+                tools:targetApi="o" />
 
             <EditText
+                android:autofillHints="@string/alt_sinir"
                 android:id="@+id/edtAltSinir"
                 style="@style/txtLimit"
-                android:hint="@string/alt_sinir" />
+                android:hint="@string/alt_sinir"
+                tools:targetApi="o" />
         </LinearLayout>
 
         <LinearLayout
@@ -121,6 +127,4 @@
                 style="@style/switchNotification" />
         </LinearLayout>
     </LinearLayout>
-
-
 </FrameLayout>

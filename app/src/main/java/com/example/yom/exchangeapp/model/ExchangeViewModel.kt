@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import com.example.yom.exchangeapp.entity.ExchangeEntity
 import com.example.yom.exchangeapp.repository.ExchangeRepository
 
-
 class ExchangeViewModel(application: Application) : AndroidViewModel(application) {
 
     private var mRepository: ExchangeRepository = ExchangeRepository(application)
@@ -14,7 +13,6 @@ class ExchangeViewModel(application: Application) : AndroidViewModel(application
 
     init {
         allList = mRepository.allList
-        // countList=mRepository.countList
     }
 
     fun getItemCounts(code: String): Int {
