@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcyFavorite"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pulToRefreshFav"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.FavoriteFragment" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcyFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.FavoriteFragment" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </FrameLayout>

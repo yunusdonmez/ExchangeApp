@@ -1,5 +1,6 @@
 package com.example.yom.exchangeapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.FavoriteAdapter
 import com.example.yom.exchangeapp.entity.ExchangeEntity
-import com.example.yom.exchangeapp.model.ExchangeViewModel
+import com.example.yom.exchangeapp.viewmodel.ExchangeViewModel
 import kotlinx.android.synthetic.main.fragment_favourite.*
 
 class FavoriteFragment : Fragment() {
@@ -20,6 +21,10 @@ class FavoriteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         updateFragment()
+        pulToRefreshFav.setOnRefreshListener {
+            pulToRefreshFav.isRefreshing = false
+            updateFragment()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,10 +61,12 @@ class FavoriteFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.about -> {
-                AboutActivity()
+                val intent = Intent(context, AboutActivity::class.java)
+                startActivityForResult(intent, 1)
                 true
             }
-            R.id.newPage -> {
+            R.id.refresh -> {
+                updateFragment()
                 true
             }
             else -> super.onOptionsItemSelected(item)

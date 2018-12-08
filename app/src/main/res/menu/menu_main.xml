@@ -28,8 +28,8 @@
                 android:id="@+id/about"
                 android:title="@string/about" />
             <item
-                android:id="@+id/newPage"
-                android:title="@string/new_page" />
+                android:id="@+id/refresh"
+                android:title="@string/refreshPage" />
         </menu>
     </item>
 </menu>

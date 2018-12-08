@@ -63,5 +63,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-core:16.0.5'
 
+    //aboutpage
+    implementation 'com.github.medyo:android-about-page:1.2.4'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

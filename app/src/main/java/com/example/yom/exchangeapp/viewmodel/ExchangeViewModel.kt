@@ -1,4 +1,4 @@
-package com.example.yom.exchangeapp.model
+package com.example.yom.exchangeapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

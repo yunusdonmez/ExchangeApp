@@ -1,6 +1,7 @@
 package com.example.yom.exchangeapp.ui
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yom.exchangeapp.R
 import com.example.yom.exchangeapp.adapter.ExchangeAdapter
 import com.example.yom.exchangeapp.entity.ExchangeEntity
-import com.example.yom.exchangeapp.model.ExchangeViewModel
 import com.example.yom.exchangeapp.network.SendRequest
 import com.example.yom.exchangeapp.network.response.MoneyListResponse
+import com.example.yom.exchangeapp.viewmodel.ExchangeViewModel
 import kotlinx.android.synthetic.main.fragment_exchange.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -107,10 +108,21 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.actionSearch) {
-            return true
+        return when (item?.itemId) {
+            R.id.about -> {
+                val intent = Intent(context, AboutActivity::class.java)
+                startActivityForResult(intent, 1)
+                true
+            }
+            R.id.refresh -> {
+                SendRequest.getAll().enqueue(this@ExchangeFragment)
+                true
+            }
+            R.id.actionSearch -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }
 
