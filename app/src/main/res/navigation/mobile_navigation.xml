@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/frmExchange">
+    app:startDestination="@id/frmExchange"
+    tools:ignore="UnusedNavigation">
     <activity
         android:id="@+id/actMain"
-        android:name="com.example.yom.exchangeapp.ui.MainActivity"
+        android:name="com.xchyom.yom.exchangeapp.ui.MainActivity"
         tools:layout="@layout/activity_main" />
+
     <fragment
         android:id="@+id/frmExchange"
-        android:name="com.example.yom.exchangeapp.ui.ExchangeFragment"
+        android:name="com.xchyom.yom.exchangeapp.ui.ExchangeFragment"
         tools:layout="@layout/fragment_exchange">
         <action
-            android:id="@+id/action_frmExchange_to_frmFavourite2"
+            android:id="@+id/action_frmExchange_to_frmFavourite"
             app:destination="@id/frmFavourite" />
         <action
             android:id="@+id/action_frmExchange_to_actAbout"
@@ -21,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/frmFavourite"
-        android:name="com.example.yom.exchangeapp.ui.FavoriteFragment"
+        android:name="com.xchyom.yom.exchangeapp.ui.FavoriteFragment"
         tools:layout="@layout/fragment_favourite">
         <action
             android:id="@+id/action_frmFavourite_to_frmVideo"
@@ -32,9 +34,9 @@
     </fragment>
     <fragment
         android:id="@+id/frmVideo"
-        android:name="com.example.yom.exchangeapp.ui.VideoFragment"
+        android:name="com.xchyom.yom.exchangeapp.ui.VideoFragment"
         tools:layout="@layout/fragment_video" />
     <activity
         android:id="@+id/actAbout"
-        android:name="com.example.yom.exchangeapp.ui.AboutActivity" />
+        android:name="com.xchyom.yom.exchangeapp.ui.AboutActivity" />
 </navigation>

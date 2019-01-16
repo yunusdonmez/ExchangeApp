@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLayout"
+    android:id="@+id/rootLayout"
     tools:context=".ui.MainActivity">
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vpMain"
         android:layout_width="match_parent"

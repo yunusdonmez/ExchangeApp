@@ -7,8 +7,12 @@
     <string name="youtube_photos">Youtube Photos</string>
     <string name="menu">menu</string>
     <string name="ara">Ara</string>
-    <string name="about">About</string>
+    <string name="about">Hakkımızda</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="flag_favorite">flag favorite</string>
     <string name="refreshPage">Yenile</string>
+    <string name="title_activity_splash">Kaç Oldu</string>
+    <string name="cross">Çevirici</string>
+    <string name="hesapla">Hesapla</string>
+    <string name="result">Sonuç</string>
 </resources>
