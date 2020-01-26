@@ -77,7 +77,7 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    fun alertDialog() {
+    private fun alertDialog() {
         val crossFragment = CrossFragment()
         crossFragment.show(fragmentManager, "cross_fragment")
     }

@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
+    android:theme="@style/deneme"
     android:orientation="vertical"
     android:padding="16dp">
 
     <Spinner
         android:id="@+id/spinnerFrom"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="fill_parent"
-        android:layout_height="36dp" />
-
-    <Spinner
-        android:id="@+id/spinnerTo"
-        android:layout_width="fill_parent"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/quantity"
@@ -26,13 +20,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Değer"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:id="@+id/spinnerTo"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 
     <Button
-        android:id="@+id/somar"
+        android:id="@+id/calculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
+        android:shadowColor="@color/colorPrimaryDark"
+        android:textColor="@color/cardWhite"
+        android:textColorHighlight="@color/colorPrimaryDark"
+        android:textSize="16sp"
         android:text="@string/hesapla" />
 
     <TextView

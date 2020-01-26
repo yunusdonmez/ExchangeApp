@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface MoneyListService {
 
-    @GET("")
+    @GET("***")
     fun getAll(): Call<List<MoneyListResponse>>
 }

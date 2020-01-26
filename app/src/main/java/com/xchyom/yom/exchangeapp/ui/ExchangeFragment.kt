@@ -3,10 +3,10 @@ package com.xchyom.yom.exchangeapp.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +16,7 @@ import com.xchyom.yom.exchangeapp.entity.CrossValuesEntity
 import com.xchyom.yom.exchangeapp.entity.ExchangeEntity
 import com.xchyom.yom.exchangeapp.network.SendRequest
 import com.xchyom.yom.exchangeapp.network.response.MoneyListResponse
+import com.xchyom.yom.exchangeapp.toast
 import com.xchyom.yom.exchangeapp.viewmodel.CrossValuesViewModel
 import com.xchyom.yom.exchangeapp.viewmodel.ExchangeViewModel
 import kotlinx.android.synthetic.main.fragment_exchange.*
@@ -36,7 +37,33 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
 
 
     override fun onFailure(call: Call<List<MoneyListResponse>>, t: Throwable) {
-        Log.e("Retrofit", "$t")
+        crossValuesViewModel.allList.value != null
+        crossValuesViewModel.allList.observe(this, Observer {
+            it.forEach { entity ->
+                if (exchangeViewModel.getItemCounts(entity.code) > 0) {
+                    exchangeList.add(ExchangeEntity(
+                            entity.code,
+                            entity.moneyType,
+                            entity.valueSelling,
+                            entity.valueBuying,
+                            "https://coinyep.com/img/png/" + entity.code + ".png",
+                            true))
+                } else {
+                    exchangeList.add(ExchangeEntity(
+                            entity.code,
+                            entity.moneyType,
+                            entity.valueSelling,
+                            entity.valueBuying,
+                            "https://coinyep.com/img/png/" + entity.code + ".png",
+                            false))
+                }
+            }
+            rcyExchange.setHasFixedSize(true)
+            rcyExchange.layoutManager = LinearLayoutManager(activity)
+            adapter = ExchangeAdapter(exchangeList, rcyExchange.context)
+            rcyExchange.adapter = adapter
+        })
+        "İnternet Bağlantınız Olmadığı İçin Eski Verileri Görmektesiniz!".toast(rcyExchange.context)
     }
 
     override fun onResponse(call: Call<List<MoneyListResponse>>, response: Response<List<MoneyListResponse>>) {
@@ -48,6 +75,13 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
             if (exchangeViewModel.getItemCounts(response.body()!![i].code) > 0) {
                 exchangeList.add(ExchangeEntity(
                         response.body()!![i].code,
+                        response.body()!![i].moneyType,
+                        response.body()!![i].valueSelling,
+                        response.body()!![i].valueBuying,
+                        "https://coinyep.com/img/png/" + response.body()!![i].code + ".png",
+                        true))
+                //favori güncellenmesi
+                exchangeViewModel.insert(ExchangeEntity(response.body()!![i].code,
                         response.body()!![i].moneyType,
                         response.body()!![i].valueSelling,
                         response.body()!![i].valueBuying,
@@ -124,7 +158,6 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
                 adapter.filter.filter(newText)
                 return true
             }
@@ -153,7 +186,7 @@ class ExchangeFragment : Fragment(), Callback<List<MoneyListResponse>> {
         }
     }
 
-    fun alertDialog() {
+    private fun alertDialog() {
         val crossFragment = CrossFragment()
         crossFragment.show(fragmentManager, "cross_fragment")
     }

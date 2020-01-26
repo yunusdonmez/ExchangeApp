@@ -2,7 +2,6 @@ package com.xchyom.yom.exchangeapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
@@ -42,29 +41,27 @@ class FavoriteViewHolder(parent: ViewGroup)
         scaleAnimation.duration = 500
         val bounceInterpolator = BounceInterpolator()
         scaleAnimation.interpolator = bounceInterpolator
-        imgFollow.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                view?.startAnimation(scaleAnimation)
-                val db = Room.databaseBuilder(
-                        context.applicationContext,
-                        ExchangeDB::class.java,
-                        "exchangeDB"
-                ).fallbackToDestructiveMigration().build()
-                if (exchangeDTO.isFollow) {
-                    exchangeDTO.isFollow = false
-                    Thread {
-                        //db.exchDao().insertAll(exchangeDTO)
-                        db.exchDao().delete(exchangeDTO)
-                    }.start()
-                } else {
-                    exchangeDTO.isFollow = true
-                    Thread {
-                        //db.exchDao().insertAll(exchangeDTO)
-                        db.exchDao().insertItem(exchangeDTO)
-                    }.start()
-                }
-                db.close()
+        imgFollow.setOnClickListener { view ->
+            view?.startAnimation(scaleAnimation)
+            val db = Room.databaseBuilder(
+                    context.applicationContext,
+                    ExchangeDB::class.java,
+                    "exchangeDB"
+            ).fallbackToDestructiveMigration().build()
+            if (exchangeDTO.isFollow) {
+                exchangeDTO.isFollow = false
+                Thread {
+                    //db.exchDao().insertAll(exchangeDTO)
+                    db.exchDao().delete(exchangeDTO)
+                }.start()
+            } else {
+                exchangeDTO.isFollow = true
+                Thread {
+                    //db.exchDao().insertAll(exchangeDTO)
+                    db.exchDao().insertItem(exchangeDTO)
+                }.start()
             }
-        })
+            db.close()
+        }
     }
 }

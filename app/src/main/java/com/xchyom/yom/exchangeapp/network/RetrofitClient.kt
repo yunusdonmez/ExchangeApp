@@ -6,7 +6,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 class RetrofitClient {
 
     companion object {
-        private const val BASE_URL = ""
+        private const val BASE_URL = "***"
 
         fun getClient(): Retrofit {
 
